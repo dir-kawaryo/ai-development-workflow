@@ -60,10 +60,9 @@ export default function TetrisPage() {
     return board;
   }, [gameState.board, gameState.currentPiece]);
 
-  const renderCell = useCallback((color: string | null, rowIndex: number, colIndex: number) => {
+  const renderCell = useCallback((color: string | null) => {
     return (
       <div
-        key={`${rowIndex}-${colIndex}`}
         className="w-full h-full border border-slate-700"
         style={{
           backgroundColor: color || '#1e293b',
@@ -114,7 +113,11 @@ export default function TetrisPage() {
               }}
             >
               {displayBoard.map((row, rowIndex) =>
-                row.map((cell, colIndex) => renderCell(cell, rowIndex, colIndex))
+                row.map((cell, colIndex) => (
+                  <div key={`${rowIndex}-${colIndex}`}>
+                    {renderCell(cell)}
+                  </div>
+                ))
               )}
             </div>
 
