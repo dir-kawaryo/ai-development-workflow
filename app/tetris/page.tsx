@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 
 import type { Board, Tetromino } from '@/app/types/tetris';
 import { BOARD_HEIGHT, BOARD_WIDTH } from '@/app/constants/tetris';
@@ -60,7 +60,7 @@ export default function TetrisPage() {
     return board;
   }, [gameState.board, gameState.currentPiece]);
 
-  const renderCell = (color: string | null, rowIndex: number, colIndex: number) => {
+  const renderCell = useCallback((color: string | null, rowIndex: number, colIndex: number) => {
     return (
       <div
         key={`${rowIndex}-${colIndex}`}
@@ -68,9 +68,10 @@ export default function TetrisPage() {
         style={{
           backgroundColor: color || '#1e293b',
         }}
+        aria-hidden="true"
       />
     );
-  };
+  }, []);
 
   const renderPreviewPiece = (piece: Tetromino | null) => {
     if (!piece) return null;
@@ -104,6 +105,8 @@ export default function TetrisPage() {
           {/* Game Board */}
           <div className="bg-slate-950 rounded-2xl shadow-2xl p-6">
             <div
+              role="grid"
+              aria-label="Tetris game board"
               className="grid gap-0 border-2 border-slate-600"
               style={{
                 gridTemplateColumns: `repeat(${BOARD_WIDTH}, 1.5rem)`,
@@ -118,10 +121,11 @@ export default function TetrisPage() {
             {/* Game Over Overlay */}
             {gameState.isGameOver && (
               <div className="mt-4 text-center">
-                <p className="text-2xl font-bold text-red-500 mb-2">Game Over!</p>
+                <p className="text-2xl font-bold text-red-500 mb-2" role="alert">Game Over!</p>
                 <button
                   onClick={resetGame}
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
+                  aria-label="Start a new game"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950"
                 >
                   New Game
                 </button>
@@ -131,7 +135,7 @@ export default function TetrisPage() {
             {/* Pause Overlay */}
             {gameState.isPaused && !gameState.isGameOver && (
               <div className="mt-4 text-center">
-                <p className="text-2xl font-bold text-yellow-500">Paused</p>
+                <p className="text-2xl font-bold text-yellow-500" role="status">Paused</p>
               </div>
             )}
           </div>
@@ -184,13 +188,15 @@ export default function TetrisPage() {
               <button
                 onClick={togglePause}
                 disabled={gameState.isGameOver}
-                className="w-full mt-4 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium"
+                aria-label={gameState.isPaused ? 'Resume game' : 'Pause game'}
+                className="w-full mt-4 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-slate-950"
               >
                 {gameState.isPaused ? 'Resume' : 'Pause'}
               </button>
               <button
                 onClick={resetGame}
-                className="w-full mt-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium"
+                aria-label="Reset game to start over"
+                className="w-full mt-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:ring-offset-slate-950"
               >
                 Reset Game
               </button>

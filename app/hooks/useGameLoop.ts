@@ -32,5 +32,5 @@ export function useGameLoop({ onTick, isGameOver, isPaused, intervalRef }: GameL
         intervalRef.current = null;
       }
     };
-  }, [onTick, isGameOver, isPaused, intervalRef]);
+  }, [onTick, isGameOver, isPaused]);
 }

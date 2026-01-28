@@ -35,6 +35,16 @@ export default function AppNavigation() {
               >
                 💰 家計簿
               </Link>
+              <Link
+                href="/tetris"
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  pathname === '/tetris'
+                    ? 'bg-purple-500 text-white'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                }`}
+              >
+                🎮 テトリス
+              </Link>
             </div>
           </div>
         </div>
