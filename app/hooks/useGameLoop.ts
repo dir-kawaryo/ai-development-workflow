@@ -19,6 +19,11 @@ export function useGameLoop({ onTick, isGameOver, isPaused, intervalRef }: GameL
       return;
     }
 
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
     intervalRef.current = setInterval(onTick, INITIAL_DROP_SPEED);
 
     return () => {
